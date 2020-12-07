@@ -13,6 +13,9 @@ search.insertAdjacentHTML('beforeend', `
     </form>
 `);
 
+const searchBar = document.querySelector('.search-input');
+const searchBarSubmit = document.querySelector('.search-submit');
+
 
 /* ======================================================================= */
 /*                 Fetch Data from Random User Generator API
@@ -163,9 +166,6 @@ body.addEventListener('click', (e) => {
 });
 
 // Employees are filtered as user types in searchbar
-const searchBar = document.querySelector('.search-input');
-const searchBarSubmit = document.querySelector('.search-submit');
-
 searchBar.addEventListener("keyup", () => {
     const searchName = searchBar.value.toLowerCase();
     const cards = document.querySelectorAll(".card");
