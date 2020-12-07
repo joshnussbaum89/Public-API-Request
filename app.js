@@ -56,7 +56,7 @@ function displayEmployeeCard(employee) {
 }
 
 // Populates HTML for employee modal
-function openEmployeeModal(index) {
+function createEmployeeModal(index) {
     const employeeIndex = employeeData[index];
     const date = new Date(employeeIndex.dob.date);
 
@@ -87,6 +87,16 @@ function openEmployeeModal(index) {
     body.insertAdjacentHTML('beforeend', modalHTML);
 }
 
+// Listens for user clicks on employee cards, opens modal
+function openEmployeeModal(e) {
+    if (e.target !== gallery) {
+        const card = e.target.closest('.card');
+        const indexNum = card.getAttribute('data-index');
+        index = indexNum;
+        createEmployeeModal(index);
+    }
+}
+
 // Close modal when user clicks 'X'
 function closeModal(modal, event) {
     const closeBtnStrong = document.querySelector('.modal-close-btn strong');
@@ -103,6 +113,7 @@ function closeModal(modal, event) {
     }
 }
 
+// Navigate between employees using "prev" and "next" buttons
 function navigateModals(event) {
     const modal = document.querySelector('.modal-container');
     const eventTarget = event.target;
@@ -112,41 +123,21 @@ function navigateModals(event) {
 
     if (eventTarget === modalPrev && index > 0) {
         index--;
-        openEmployeeModal(index);
+        createEmployeeModal(index);
     } else if (eventTarget === modalNext && index < 11) {
         index++;
-        openEmployeeModal(index);
+        createEmployeeModal(index);
     } else if (eventTarget === modalPrev && index === 0) {
-        openEmployeeModal(index);
+        createEmployeeModal(index);
     } else if (eventTarget === modalNext && index === 11) {
-        openEmployeeModal(index);
+        createEmployeeModal(index);
     }
 }
-
-function searchEmployees() {
-    // Search for employees
-}
-
-
-/* ======================================================================= */
-/*                            Event Listeners
-/* ======================================================================= */
-
-
-// Listens for user clicks on employee cards, opens modal
-gallery.addEventListener('click', e => {
-    if (e.target !== gallery) {
-        const card = e.target.closest('.card');
-        const indexNum = card.getAttribute('data-index');
-        index = indexNum;
-        openEmployeeModal(index);
-    }
-});
 
 // Listen for user interaction when modal is open
 // If user clicks the 'X', call closeModal
 // If user clicks 'Prev' or 'Next' buttons, change modals accordingly
-body.addEventListener('click', (e) => {
+function handleModalNav() {
     const modal = document.querySelector('.modal-container');
 
     if (modal) {
@@ -159,14 +150,13 @@ body.addEventListener('click', (e) => {
         })
 
         // Navigate modals
-        modalBtnContainer.addEventListener('click', (event) => {
-            navigateModals(event);
-        });
+        modalBtnContainer.addEventListener('click', navigateModals);
     }
-});
+}
 
 // Employees are filtered as user types in searchbar
-searchBar.addEventListener("keyup", () => {
+// If search bar is empty and submit button is clicked, all employees are returned to grid
+function searchEmployees() {
     const searchName = searchBar.value.toLowerCase();
     const cards = document.querySelectorAll(".card");
     const names = document.querySelectorAll(".card-name");
@@ -180,12 +170,15 @@ searchBar.addEventListener("keyup", () => {
             cards[index].style.display = "none";
         }
     });
-});
+}
 
-// If search bar is empty and submit button is clicked, all employees are returned to grid
-searchBarSubmit.addEventListener('click', () => {
-    const cards = document.querySelectorAll(".card");
-    if (searchBar.value === '') {
-        cards.forEach(card => card.style.display = "flex");
-    }
-});
+
+/* ======================================================================= */
+/*                            Event Listeners
+/* ======================================================================= */
+
+
+gallery.addEventListener('click', openEmployeeModal);
+body.addEventListener('click', handleModalNav);
+searchBarSubmit.addEventListener('click', searchEmployees);
+searchBar.addEventListener("keyup", searchEmployees);
