@@ -1,8 +1,17 @@
 const url = 'https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob &noinfo &nat=US';
 const gallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
+const search = document.querySelector('.search-container');
 let employeeData = [];
 let index = 0;
+
+// insert searchbar on page load
+search.insertAdjacentHTML('beforeend', `
+    <form action="#" method="get">
+    <input type="search" id="search-input" class="search-input" placeholder="Search...">
+    <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+    </form>
+`);
 
 
 /* ======================================================================= */
@@ -73,7 +82,6 @@ function openEmployeeModal(index) {
     `
 
     body.insertAdjacentHTML('beforeend', modalHTML);
-
 }
 
 // Close modal when user clicks 'X'
@@ -104,6 +112,10 @@ function navigateModals(event) {
         openEmployeeModal(index);
     } else if (eventTarget === modalNext && index < 11) {
         index++;
+        openEmployeeModal(index);
+    } else if (eventTarget === modalPrev && index === 0) {
+        openEmployeeModal(index);
+    } else if (eventTarget === modalNext && index === 11) {
         openEmployeeModal(index);
     }
 }
@@ -148,4 +160,32 @@ body.addEventListener('click', (e) => {
             navigateModals(event);
         });
     }
-})
+});
+
+// Employees are filtered as user types in searchbar
+const searchBar = document.querySelector('.search-input');
+const searchBarSubmit = document.querySelector('.search-submit');
+
+searchBar.addEventListener("keyup", () => {
+    const searchName = searchBar.value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    const names = document.querySelectorAll(".card-name");
+
+    names.forEach((name, index) => {
+        const nameValue = name.textContent.toLowerCase();
+
+        if (nameValue.includes(searchName)) {
+            cards[index].style.display = "flex";
+        } else {
+            cards[index].style.display = "none";
+        }
+    });
+});
+
+// If search bar is empty and submit button is clicked, all employees are returned to grid
+searchBarSubmit.addEventListener('click', () => {
+    const cards = document.querySelectorAll(".card");
+    if (searchBar.value === '') {
+        cards.forEach(card => card.style.display = "flex");
+    }
+});
