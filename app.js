@@ -77,8 +77,35 @@ function openEmployeeModal(index) {
 }
 
 // Close modal when user clicks 'X'
-function closeModal(modal) {
-    modal.remove();
+function closeModal(modal, event) {
+    const closeBtnStrong = document.querySelector('.modal-close-btn strong');
+    const closeBtn = document.querySelector('.modal-close-btn');
+    const modalPrev = document.querySelector('.modal-prev');
+    const modalNext = document.querySelector('.modal-next');
+    const eventTarget = event.target;
+
+    if (eventTarget === closeBtn
+        || eventTarget === closeBtnStrong
+        || eventTarget === modalPrev
+        || eventTarget === modalNext) {
+        modal.remove();
+    }
+}
+
+function navigateModals(event) {
+    const modal = document.querySelector('.modal-container');
+    const eventTarget = event.target;
+    const modalPrev = document.querySelector('.modal-prev');
+    const modalNext = document.querySelector('.modal-next');
+    closeModal(modal, event);
+
+    if (eventTarget === modalPrev && index > 0) {
+        index--;
+        openEmployeeModal(index);
+    } else if (eventTarget === modalNext && index < 11) {
+        index++;
+        openEmployeeModal(index);
+    }
 }
 
 function searchEmployees() {
@@ -110,32 +137,15 @@ body.addEventListener('click', (e) => {
     if (modal) {
         const closeBtn = document.querySelector('.modal-close-btn');
         const modalBtnContainer = document.querySelector('.modal-btn-container');
-        const modalPrev = document.querySelector('.modal-prev');
-        const modalNext = document.querySelector('.modal-next');
 
+        // Close modal
         closeBtn.addEventListener('click', (event) => {
-            const closeBtnStrong = document.querySelector('.modal-close-btn strong');
-            const eventTarget = event.target;
-
-            if (eventTarget === closeBtn || eventTarget === closeBtnStrong) {
-                closeModal(modal);
-            }
+            closeModal(modal, event);
         })
 
+        // Navigate modals
         modalBtnContainer.addEventListener('click', (event) => {
-            closeModal(modal);
-            const closeBtnStrong = document.querySelector('.modal-close-btn strong');
-            const eventTarget = event.target;
-
-            if (event.target === modalPrev && index > 0) {
-                index--;
-            } else if (event.target === modalNext && index < 11) {
-                index++;
-            } else if (eventTarget === closeBtn || eventTarget === closeBtnStrong) {
-                closeModal(modal);
-            }
-
-            openEmployeeModal(index);
+            navigateModals(event);
         });
     }
 })
