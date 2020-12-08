@@ -257,17 +257,3 @@ header h1 {
         margin-top: 100px;
     }
 }
-
-
-/* ===================================== 
-   Desktop
-   Hover styles on desktop 
-======================================== */
-
-@media (min-width: 1024px) {
-
-    /* .btn:hover {
-        background: rgba(255, 255, 255, 1);
-        color: rgba(25, 25, 25, 1); 
-    } */
-}

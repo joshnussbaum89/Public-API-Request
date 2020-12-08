@@ -130,7 +130,7 @@ function navigateModals(event) {
         createEmployeeModal(index);
     } else if (eventTarget === modalNext && index === 11) {
         createEmployeeModal(index);
-    } 
+    }
 }
 
 // Listen for user interaction when modal is open
