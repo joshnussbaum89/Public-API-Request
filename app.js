@@ -68,7 +68,7 @@ function createEmployeeModal(index) {
                         <img class="modal-img" src="${employeeIndex.picture.large}" alt="profile picture">
                         <h3 id="name" class="modal-name cap">${employeeIndex.name.first} ${employeeIndex.name.last}</h3>
                         <p class="modal-text">${employeeIndex.email}</p>
-                        <p class="modal-text cap">${employeeIndex.location.city}</p>
+                        <p class="modal-text cap">${employeeIndex.location.city}, ${employeeIndex.location.state}</p>
                         <hr>
                         <p class="modal-text">${employeeIndex.phone}</p>
                         <p class="modal-text">${employeeIndex.location.street.number} ${employeeIndex.location.street.name}, ${employeeIndex.location.city}, ${employeeIndex.location.state} ${employeeIndex.location.postcode}</p>
@@ -76,7 +76,6 @@ function createEmployeeModal(index) {
                     </div>
                 </div>
 
-                // IMPORTANT: Below is only for exceeds tasks 
                 <div class="modal-btn-container">
                     <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
                     <button type="button" id="modal-next" class="modal-next btn">Next</button>
@@ -131,7 +130,7 @@ function navigateModals(event) {
         createEmployeeModal(index);
     } else if (eventTarget === modalNext && index === 11) {
         createEmployeeModal(index);
-    }
+    } 
 }
 
 // Listen for user interaction when modal is open
